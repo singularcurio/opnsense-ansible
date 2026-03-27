@@ -5,6 +5,8 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
+from typing import Any
+
 DOCUMENTATION = r"""
 ---
 module: opnsense_kea_v4_subnet
@@ -122,15 +124,22 @@ kea_v4_subnet:
     description: "LAN subnet"
 """
 
+from ansible.module_utils.basic import AnsibleModule
+
 try:
-    from ansible.module_utils.basic import AnsibleModule
     from ansible_collections.opnsense.core.plugins.module_utils.opnsense import (
         build_client,
         client_argument_spec,
     )
 except ImportError:
-    from ansible.module_utils.basic import AnsibleModule  # type: ignore[no-redef]
-    from module_utils.opnsense import build_client, client_argument_spec  # type: ignore[no-redef]
+    try:
+        from module_utils.opnsense import build_client, client_argument_spec  # type: ignore[no-redef]
+    except ImportError as exc:
+        raise ImportError(
+            "Cannot import opnsense collection module_utils. "
+            "Ensure opnsense-py is installed (pip install opnsense-py) and the "
+            "collection is available (ansible-galaxy collection install opnsense.core)."
+        ) from exc
 
 from opnsense_py.client import OPNsenseClient
 from opnsense_py.exceptions import OPNsenseError, OPNsenseNotFoundError
@@ -141,6 +150,13 @@ _FIELDS = (
     "subnet", "next_server", "option_data_autocollect", "pools",
     "match_client_id", "ddns_forward_zone", "ddns_dns_server", "description",
 )
+
+
+def _extract_uuid(val: Any) -> str | None:
+    """Normalize an OPNsense UUID that may be a plain string or an edit-form dict."""
+    if isinstance(val, dict):
+        return val.get("value")
+    return val
 
 
 def _find_by_uuid(client: OPNsenseClient, uuid: str):
@@ -156,8 +172,9 @@ def _find_by_subnet(client: OPNsenseClient, subnet: str):
     for item in result.rows:
         row = item.model_dump()
         if row.get("subnet") == subnet:
-            uuid = row.get("uuid")
+            uuid = _extract_uuid(row.get("uuid"))
             if uuid:
+                row["uuid"] = uuid
                 return uuid, {k: v for k, v in row.items() if v is not None}
     return None, None
 
@@ -214,7 +231,7 @@ def run(params: dict, check_mode: bool, client: OPNsenseClient) -> dict:
             return {"changed": True, "kea_v4_subnet": None}
         obj = _build_obj(params)
         response = client.kea.add_v4_subnet(obj)
-        new_uuid = response.uuid
+        new_uuid = _extract_uuid(response.uuid)
         if params.get("reconfigure"):
             client.kea.reconfigure()
         result = client.kea.get_v4_subnet(new_uuid).model_dump(exclude_none=True)
@@ -233,7 +250,7 @@ def run(params: dict, check_mode: bool, client: OPNsenseClient) -> dict:
     if params.get("reconfigure"):
         client.kea.reconfigure()
     result = client.kea.get_v4_subnet(existing_uuid).model_dump(exclude_none=True)
-    result["uuid"] = existing_uuid
+    result["uuid"] = _extract_uuid(result.get("uuid")) or existing_uuid
     return {"changed": True, "kea_v4_subnet": result}
 
 
