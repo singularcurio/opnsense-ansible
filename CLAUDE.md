@@ -120,6 +120,22 @@ directly — `AnsibleModule` is never instantiated during unit tests.
 | `opnsense_trafficshaper_rule` | Traffic shaper rules | `client.trafficshaper` | `description` |
 | `opnsense_monit_service` | Monit service checks | `client.monit` | `name` |
 | `opnsense_monit_alert` | Monit email alerts | `client.monit` | `recipient` |
+| `opnsense_captiveportal_zone` | Captive portal zones | `client.captiveportal` | `description` |
+| `opnsense_firewall_category` | Firewall categories | `client.firewall` | `name` |
+| `opnsense_firewall_npt_rule` | NPT rules | `client.firewall` | `description` |
+| `opnsense_firewall_one_to_one_rule` | 1:1 NAT rules | `client.firewall` | `description` |
+| `opnsense_ids_policy` | IDS/IPS policies | `client.ids` | `description` |
+| `opnsense_ids_user_rule` | IDS/IPS user rules | `client.ids` | `description` |
+| `opnsense_ipsec_child` | IPsec child SAs | `client.ipsec` | `description` |
+| `opnsense_ipsec_local` | IPsec local auth | `client.ipsec` | `description` |
+| `opnsense_ipsec_remote` | IPsec remote auth | `client.ipsec` | `description` |
+| `opnsense_ipsec_pool` | IPsec address pools | `client.ipsec` | `name` |
+| `opnsense_kea_v4_peer` | Kea HA peers | `client.kea` | `name` |
+| `opnsense_monit_test` | Monit tests | `client.monit` | `name` |
+| `opnsense_openvpn_instance` | OpenVPN instances | `client.openvpn` | `description` |
+| `opnsense_openvpn_overwrite` | OpenVPN client overwrites | `client.openvpn` | `common_name` |
+| `opnsense_unbound_acl` | Unbound ACL entries | `client.unbound` | `name` |
+| `opnsense_unbound_dnsbl` | Unbound DNS blocklists | `client.unbound` | `description` |
 
 ### Adding a new module
 

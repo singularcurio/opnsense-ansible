@@ -7,66 +7,7 @@ All follow the same pattern as existing modules in `plugins/modules/`.
 
 ## Typed-model resources (straightforward — use existing Pydantic models)
 
-Implement exactly like `opnsense_cron_job.py`. The model fields are the module params.
-
-| Module name | Model | Client | Natural key | Reconfigure call |
-|-------------|-------|--------|-------------|-----------------|
-| `opnsense_captiveportal_zone` | `CaptivePortalZone` | `client.captiveportal` | `description` | `client.captiveportal.reconfigure()` |
-| `opnsense_firewall_category` | `FirewallCategory` | `client.firewall` | `name` | `client.firewall.apply()` |
-| `opnsense_firewall_npt_rule` | `NPTRule` | `client.firewall` | `description` | `client.firewall.apply()` |
-| `opnsense_firewall_one_to_one_rule` | `OneToOneRule` | `client.firewall` | `description` | `client.firewall.apply()` |
-| `opnsense_ids_policy` | `IDSPolicy` | `client.ids` | `description` | `client.ids.reconfigure()` |
-| `opnsense_ids_user_rule` | `IDSUserRule` | `client.ids` | `description` | `client.ids.reconfigure()` |
-| `opnsense_ipsec_child` | `IPsecChild` | `client.ipsec` | `description` | `client.ipsec.reconfigure()` |
-| `opnsense_ipsec_local` | `IPsecLocal` | `client.ipsec` | `description` | `client.ipsec.reconfigure()` |
-| `opnsense_ipsec_remote` | `IPsecRemote` | `client.ipsec` | `description` | `client.ipsec.reconfigure()` |
-| `opnsense_ipsec_pool` | `IPsecPool` | `client.ipsec` | `name` | `client.ipsec.reconfigure()` |
-| `opnsense_kea_v4_peer` | `KeaHaPeer` | `client.kea` | `name` | `client.kea.reconfigure()` |
-| `opnsense_monit_test` | `MonitTest` | `client.monit` | `name` | `client.monit.reconfigure()` |
-| `opnsense_openvpn_instance` | `OpenVPNInstance` | `client.openvpn` | `description` | `client.openvpn.reconfigure()` (check method name) |
-| `opnsense_openvpn_overwrite` | `OpenVPNOverwrite` | `client.openvpn` | `common_name` | `client.openvpn.reconfigure()` |
-| `opnsense_unbound_acl` | `UnboundAcl` | `client.unbound` | `name` | `client.unbound.reconfigure()` |
-| `opnsense_unbound_dnsbl` | `UnboundDnsbl` | `client.unbound` | `description` | `client.unbound.reconfigure()` |
-
-### Method names to verify before implementing
-
-```python
-# captiveportal
-client.captiveportal.search_zones / get_zone / add_zone / set_zone / del_zone
-
-# firewall categories
-client.firewall.search_categories / get_category / add_category / set_category / del_category
-
-# firewall NPT
-client.firewall.search_npt_rules / get_npt_rule / add_npt_rule / set_npt_rule / del_npt_rule
-
-# firewall one-to-one
-client.firewall.search_one_to_one_rules / get_one_to_one_rule / add_one_to_one_rule / set_one_to_one_rule / del_one_to_one_rule
-
-# IDS
-client.ids.search_policies / get_policy / add_policy / set_policy / del_policy
-client.ids.search_user_rules / get_user_rule / add_user_rule / set_user_rule / del_user_rule
-
-# IPsec
-client.ipsec.search_children / get_child / add_child / set_child / del_child
-client.ipsec.search_locals / get_local / add_local / set_local / del_local
-client.ipsec.search_remotes / get_remote / add_remote / set_remote / del_remote
-client.ipsec.search_pools / get_pool / add_pool / set_pool / del_pool
-
-# Kea HA peer
-client.kea.search_v4_peers / get_v4_peer / add_v4_peer / set_v4_peer / del_v4_peer
-
-# Monit test
-client.monit.search_tests / get_test / add_test / set_test / del_test
-
-# OpenVPN
-client.openvpn.search_instances / get_instance / add_instance / set_instance / del_instance
-client.openvpn.search_client_overwrites / get_client_overwrite / add_client_overwrite / set_client_overwrite / del_client_overwrite
-
-# Unbound
-client.unbound.search_acls / get_acl / add_acl / set_acl / del_acl
-client.unbound.search_dnsbl / get_dnsbl / add_dnsbl / set_dnsbl / del_dnsbl
-```
+**All 16 typed-model resources have been implemented.** See the CLAUDE.md module table.
 
 ---
 
