@@ -1,0 +1,18 @@
+namespace: opnsense
+name: core
+version: 0.1.0
+readme: README.md
+description: Ansible collection for managing OPNsense firewall via REST API
+authors:
+  - Justin Refi <justinrefi@gmail.com>
+license:
+  - MIT
+tags:
+  - networking
+  - firewall
+  - opnsense
+dependencies: {}
+repository: ""
+documentation: ""
+homepage: ""
+issues: ""
